@@ -9,17 +9,6 @@
   <description>Camel example exposing a webservice to get or add productTypes (bean implementation)</description>
   <packaging>jar</packaging>
   
-  <properties>
-    <fabric8.version>2.2.0.redhat-079</fabric8.version>
-    <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-
-    <!-- Docker & Fabric8 Configs -->
-    <docker.from>jboss-fuse-6/fis-java-openshift:1.0</docker.from>
-    <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    
-  </properties>
-
   <repositories>
     <repository>
       <id>fusesource</id>
@@ -143,23 +132,6 @@
     <plugins>
 
       <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>hawt-app-maven-plugin</artifactId>
-        <version>${fabric8.version}</version>
-        <executions>
-          <execution>
-            <id>hawt-app</id>
-            <goals>
-			 <goal>build</goal>
-			</goals>
-            <configuration>
-              <javaMainClass>org.apache.camel.cdi.Main</javaMainClass>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-codegen-plugin</artifactId>
         <version>3.0.4</version>
@@ -207,31 +179,7 @@
         <version>2.12.0.redhat-611412</version>
       </plugin>
       
-      <!-- 3. create docker image -->
-      <plugin>
-        <groupId>org.jolokia</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>${docker.maven.plugin.version}</version>
-        <configuration>
-          <images>
-            <image>
-              <name>${docker.image}</name>
-              <build>
-                <from>${docker.from}</from>
-                <assembly>
-                  <basedir>/deployments</basedir>
-                  <descriptorRef>hawt-app</descriptorRef>
-                </assembly>
-                <env>
-                  <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
-                  <JAVA_MAIN_CLASS>com.test.product.MainExample</JAVA_MAIN_CLASS>
-                </env>
-              </build>
-            </image>
-          </images>
-        </configuration>
-      </plugin>
-  
+        
     </plugins>
   </build>
 
